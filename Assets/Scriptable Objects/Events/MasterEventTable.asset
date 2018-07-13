@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b2239c4b21f2443ab9162a5c41fcdb, type: 3}
+  m_Name: MasterEventTable
+  m_EditorClassIdentifier: 
+  comments: "Events | Description\n\nOnEditorModeButtonClicked\t- 'Back to Editor'
+    button was clicked\nOnMoveButtonClicked\t\t- Moves the entity\nOnRotateButtonClicked\t-
+    Rotates the entity\nOnPlayButtonClicked\t\t- Play button is clicked\nOnPauseMenuClose\t\t-
+    Pause menu closes\nOnPauseMenuOpen\t\t- Pause menu opens\nOnSaveButtonClicked\nOnScaleDownButtonClicked\nOnScaleUpButtonClicked\n\n\nOnWorldModeChange\t\t-
+    Changes between play modes"

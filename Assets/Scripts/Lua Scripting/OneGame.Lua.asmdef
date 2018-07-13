@@ -1,0 +1,12 @@
+{
+    "name": "OneGame.Lua",
+    "references": [
+        "Moonsharp",
+        "Common",
+        "LitJson"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
