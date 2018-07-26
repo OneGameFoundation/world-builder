@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using LitJson;
 using OneGame.Lua;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace OneGame {
     using Type = Lua.Type;
@@ -107,86 +103,10 @@ namespace OneGame {
 
             Debug.Log ("[Script Catalog] Downloading scripts..");
 
-            var manifestWWW = UnityWebRequest.Get (scriptUrl).SendWebRequest ();
-            manifestWWW.completed += (mc) => {
-                // Generate script data
-                var jsonData = JsonMapper.ToObject (DownloadHandlerBuffer.GetContent (manifestWWW.webRequest));
-                var jsonArray = jsonData[0];
-
-                for (var i = 0; i < jsonArray.Count; ++i) {
-                    var datum = jsonArray[i];
-
-                    var scriptData = new ScriptData {
-                        id = (uint)datum["id"],
-                        name = datum["name"].GetString (),
-                    };
-
-                    scripts.Add (scriptData.id, scriptData);
-
-                    // Download the script
-                    var url = string.Format ("{0}{1}", urlPrefix, datum["asset-path"]);
-                    downloadQueue.Enqueue (new Tuple<uint, string> (scriptData.id, url));
-                }
-
-                DownloadFromQueue (downloadQueue);
-
-                manifestWWW.webRequest.Dispose ();
-            };
-        }
-
-        /// <summary>
-        /// Downloads the scripts, one by one on a download queue
-        /// </summary>
-        private void DownloadFromQueue (Queue<Tuple<uint, string>> queue) {
-            if (queue.Count > 0) {
-                DownloadScript (queue.Peek (),
-                    () => {
-                        queue.Dequeue ();
-                        DownloadFromQueue (queue);
-                    },
-                    () => {
-                        Debug.LogWarningFormat (
-                            "[Script Catalog] <color=red>Skipping '{0}'...this may break saves if it relies on this script</color>",
-                            scripts[queue.Peek ().item1]);
-
-                        queue.Dequeue ();
-                        DownloadFromQueue (queue);
-                    });
-            } else {
-                Debug.LogWarning ("[Script Catalog] <color=green>Download complete!</color>");
-                IsReady = true;
-            }
-        }
-
-        /// <summary>
-        /// Downloads a script from the internet
-        /// </summary>
-        private void DownloadScript (Tuple<uint, string> scriptInfo, Action onSuccess, Action onFail) {
-            var www = new UnityWebRequest (scriptInfo.item2);
-            var downloadHandler = new DownloadHandlerBuffer ();
-            www.downloadHandler = downloadHandler;
-
-            Debug.LogFormat ("[Script Catalog] Downloading '{0}'...", scripts[scriptInfo.item1].name);
-
-            var op = www.SendWebRequest ();
-
-            op.completed += (c) => {
-                if (www.isNetworkError || www.isHttpError) {
-
-                    Debug.LogFormat ("[Script Catalog] <color=red>Error! Cannot download '{0}'!\n{1}...<color>",
-                        scripts[scriptInfo.item1].name, www.error);
-
-                    onFail?.Invoke ();
-                } else {
-                    UpdateCode (scriptInfo.item1, downloadHandler.text);
-
-                    Debug.LogFormat ("[Script Catalog] Downloaded '{0}'", scripts[scriptInfo.item1].name);
-
-                    onSuccess?.Invoke ();
-                }
-
-                www.Dispose ();
-            };
+            ScriptCatalogUtility.DownloadScripts (scriptUrl, urlPrefix,
+                s => scripts.Add (s.id, s),
+                () => { IsReady = true; }
+            );
         }
 
         /// <summary>
@@ -244,6 +164,5 @@ namespace OneGame {
                 scripts[id] = scriptData;
             }
         }
-
     }
 }

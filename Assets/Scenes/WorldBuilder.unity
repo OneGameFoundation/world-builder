@@ -2160,6 +2160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1219628840}
   - component: {fileID: 1219628839}
+  - component: {fileID: 1219628841}
   m_Layer: 0
   m_Name: '[Game] World Manager'
   m_TagString: Untagged
@@ -2198,6 +2199,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1219628841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1219628838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c5b036dd03546b4caa9eac31c44bad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 11400000, guid: 94d4ec75c41254b96a749a4fd47190b7, type: 2}
+  eventTable: {fileID: 11400000, guid: 41066a801ef1b6f449971b202e8e2fb2, type: 2}
 --- !u!1 &1239654329 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 136130, guid: 0fc2d189a51fe504e94d3f80e9ca5bc1, type: 2}
